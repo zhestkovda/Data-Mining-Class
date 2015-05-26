@@ -12,8 +12,8 @@ while (len(line)>0):
     i=someone[0]
     print i
     followers = ' '.join(someone[1:])
-    f_nodes(i+'\n')
-    f_edges(followers+'\n')
+    f_nodes.write(i+'\n')
+    f_edges.write(followers+'\n')
     line = f.readline()
 
 f.close()

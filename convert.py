@@ -17,4 +17,7 @@ while (len(line)>0):
     line = f.readline()
 
 f.close()
+f_edges.close()
+f_nodes.close()
+
 print 'Completed'

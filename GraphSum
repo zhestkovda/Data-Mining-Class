@@ -1,0 +1,145 @@
+// GraphSum.cpp: определяет точку входа для консольного приложения.
+//
+
+#include "stdafx.h"
+#include <conio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <boost/lambda/lambda.hpp>
+//#include <boost/graph>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <boost/algorithm/string.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/heap/priority_queue.hpp>
+#include <time.h>
+
+using namespace std;
+
+struct Vertex{ int ID; };
+
+
+
+
+//Define the graph using those classes
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex> Graph;
+
+// create a typedef for the Graph type
+//typedef boost::adjacency_list<vertex_info> Graph;
+//Some typedefs for simplicity
+typedef boost::graph_traits<Graph>::vertex_descriptor vertex_t;
+typedef boost::graph_traits<Graph>::edge_descriptor edge_t;
+
+
+// declare a graph object
+Graph g;
+vertex_t u, v;
+priority_queue<int> pq; // max heap
+
+
+void AddNode(std::vector<std::string> strs);
+int Greedy();
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+const std::string currentDateTime() {
+	time_t     now = time(0);
+	struct tm  tstruct;
+	char       buf[80];
+	tstruct = *localtime(&now);
+	strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+	return buf;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	int k=0;
+	std::vector<std::string> strs;
+	
+	std::ifstream infile("D:\\Skoltech\\Study\\Data Mining\\project\\f0.txt");
+	std::string str;
+	if (!infile) {
+		cout << "can not open the file" << endl;
+		return -1;
+	}
+
+	cout << "Input file:\n";
+	
+	FILE* pFile = fopen("D:\\Skoltech\\Study\\Data Mining\\project\\logFile.txt", "a");
+	fprintf(pFile, "Start: %s\n", currentDateTime());
+
+	while ( k<10000) //!infile.eof()
+	{
+		k++;
+		getline(infile, str);
+		cout << str << endl;
+		boost::split(strs, str, boost::is_any_of("\t ")); //split str  to strs[] 
+		AddNode(strs); // 123 24235353  23534543  124242  6756
+	} 
+	fprintf(pFile, "End: %s\n", currentDateTime());
+	fclose(pFile);
+
+
+	int res = Greedy();
+	
+	//RandomizedSum();
+
+	infile.close();
+	getchar();
+	return 0;
+}
+
+
+void AddNode(std::vector<std::string> strs)
+{
+	u = boost::add_vertex(g);
+	
+	g[u].ID = stoi(strs.at(0));
+	//for (std::vector<std::string>::iterator i = strs.begin(); i != strs.end(); ++i)
+	cout << stoi(strs.at(0)) << endl;
+	try
+	{
+		if (strs.size() > 1)
+		{
+
+			for (unsigned i = 1; i < strs.size(); i++)
+			{
+				// check if the mode i does not exist
+
+				cout << strs.at(i) << endl;
+				v = boost::add_vertex(g);
+				
+				g[v].ID = stoi(strs.at(i));
+				boost::add_edge(u, v, g);
+			}
+		}
+	}
+	catch (...)
+	{
+		//
+	}
+	printf("\n\n%d",strs.size());
+}
+
+//template <typename PriorityQueue>
+int Greedy()
+{
+	int res = 1;
+	
+	// Initialize step
+	//for ()
+	//	if() 
+		//	pq.push(2);
+
+	return res;
+}
+
+
+float CostReductionCalc(int cu, int cv, int cw)
+{
+	return ((float)cu + (float)cv - (float)cw) / ((float)cu + (float)cv);
+}
